@@ -62,7 +62,7 @@ from bfcl_eval.model_handler.local_inference.salesforce_llama import (
 from bfcl_eval.model_handler.local_inference.salesforce_qwen import (
     SalesforceQwenHandler,
 )
-from bfcl_eval.model_handler.local_inference.smollm2 import SmolLM2Handler
+from bfcl_eval.model_handler.local_inference.smollm2 import SmolLm2Handler
 from bfcl_eval.model_handler.local_inference.think_agent import ThinkAgentHandler
 
 # -----------------------------------------------------------------------------
@@ -1131,7 +1131,7 @@ local_inference_model_map = {
     url="https://huggingface.co/HuggingFaceTB/SmolLM2-135M",  
     org="HuggingFace",  
     license="apache-2.0",  # Check actual license  
-    model_handler=SmolLM2Handler,  # e.g., SmolLM2  
+    model_handler=SmolLm2Handler,  # e.g., SmolLM2  
     input_price=None,  
     output_price=None,  
     is_fc_model=False,  
