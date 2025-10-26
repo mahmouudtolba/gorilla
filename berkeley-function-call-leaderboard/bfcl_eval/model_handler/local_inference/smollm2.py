@@ -14,7 +14,7 @@ class SmolLm2Handler(OSSHandler):
         dtype="bfloat16",
         **kwargs,
     ) -> None:
-        super().__init__(model_name, temperature, registry_name, is_fc_model, **kwargs)
+        super().__init__(model_name, temperature, registry_name, is_fc_model,model_max_len=81920 ,**kwargs)
     @override
     def _format_prompt(self, messages, function):
         """
