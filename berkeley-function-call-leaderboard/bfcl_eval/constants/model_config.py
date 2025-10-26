@@ -62,6 +62,7 @@ from bfcl_eval.model_handler.local_inference.salesforce_llama import (
 from bfcl_eval.model_handler.local_inference.salesforce_qwen import (
     SalesforceQwenHandler,
 )
+from bfcl_eval.model_handler.local_inference.smollm2 import SmolLM2Handler
 from bfcl_eval.model_handler.local_inference.think_agent import ThinkAgentHandler
 
 # -----------------------------------------------------------------------------
@@ -1124,6 +1125,18 @@ api_inference_model_map = {
 
 # Inference through local hosting
 local_inference_model_map = {
+    "HuggingFaceTB/SmolLM2-135M": ModelConfig(  
+    model_name="HuggingFaceTB/SmolLM2-135M",  
+    display_name="SmolLM2-135M (Prompt)",  
+    url="https://huggingface.co/HuggingFaceTB/SmolLM2-135M",  
+    org="HuggingFace",  
+    license="apache-2.0",  # Check actual license  
+    model_handler=SmolLM2Handler,  # e.g., SmolLM2  
+    input_price=None,  
+    output_price=None,  
+    is_fc_model=False,  
+    underscore_to_dot=False) ,
+
     "deepseek-ai/DeepSeek-R1": ModelConfig(
         model_name="deepseek-ai/DeepSeek-R1",
         display_name="DeepSeek-R1 (Prompt) (Local)",
