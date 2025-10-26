@@ -27,12 +27,14 @@ class OSSHandler(BaseHandler, EnforceOverrides):
         registry_name,
         is_fc_model,
         dtype="bfloat16",
+        model_max_len=None,
         **kwargs,
     ) -> None:
         super().__init__(model_name, temperature, registry_name, is_fc_model, **kwargs)
         self.model_name_huggingface = model_name
         self.model_style = ModelStyle.OSSMODEL
         self.dtype = dtype
+        self.model_max_len = model_max_len  # Store the optional override
 
         # Will be overridden in batch_inference method
         # Used to indicate where the tokenizer and config should be loaded from
@@ -114,16 +116,21 @@ class OSSHandler(BaseHandler, EnforceOverrides):
         self.tokenizer = AutoTokenizer.from_pretrained(**load_kwargs)
         config = AutoConfig.from_pretrained(**load_kwargs)
 
-        if hasattr(config, "max_position_embeddings"):
+        # Check if model_max_len was explicitly provided as an override
+        if self.model_max_len is not None:
+            self.max_context_length = self.model_max_len
+            print(f"Max context length (from model_max_len parameter): {self.max_context_length}")
+        elif hasattr(config, "max_position_embeddings"):
             self.max_context_length = config.max_position_embeddings
+            print(f"Max context length (from config): {self.max_context_length}")
         elif self.tokenizer.model_max_length is not None:
             self.max_context_length = self.tokenizer.model_max_length
+            print(f"Max context length (from tokenizer): {self.max_context_length}")
         else:
             if not hasattr(self, "max_context_length"):
                 raise ValueError(
                     "Model does not have a max_position_embeddings attribute or tokenizer.model_max_length attribute. Please set the max_context_length attribute in the corresponding model handler."
                 )
-        print(f"Max context length: {self.max_context_length}")
 
         self._server_process = process = None
         self._stdout_thread = stdout_thread = None
